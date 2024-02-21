@@ -1,0 +1,1523 @@
+openapi: 3.0.0
+info:
+  description: |
+    User management system with REST API.
+  version: '1.0.0'
+  title: User Management System
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'http://localhost:4000/api/v1'
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User/Admin
+      operationId: login
+      responses:
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/LoginResponse'
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+  /auth/refresh:
+    post:
+      tags:
+        - Auth
+      summary: Refresh access token
+      description: Refresh access token
+      operationId: refreshAccessToken
+      requestBody:
+        $ref: '#/components/requestBodies/Refresh'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RefreshResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+  /auth/change-password:
+    patch:
+      tags:
+        - Auth
+      summary: Change User Password
+      description: Change User Password
+      operationId: changePassword
+      requestBody:
+        $ref: '#/components/requestBodies/ChangePassword'
+      responses:
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ConflictResponse'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ChangePasswordResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+      security:
+        - bearerAuth: []
+  /auth/forgot-password:
+    post:
+      tags:
+        - Auth
+      summary: Send Password Reset Link
+      description: Send Password Reset Link
+      operationId: forgotPassword
+      requestBody:
+        $ref: '#/components/requestBodies/ForgotPassword'
+      responses:
+        '401':
+          description: UnAuthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForgotPasswordResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '404':
+          description: Record not found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ValidationErrorResponse'
+  /auth/reset-password:
+    patch:
+      tags:
+        - Auth
+      summary: Reset User Password
+      description: Reset User Password
+      operationId: resetPassword
+      requestBody:
+        $ref: '#/components/requestBodies/ResetPassword'
+      responses:
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ConflictResponse'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ResetPasswordResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+  /users/create:
+    post:
+      tags:
+        - User
+      summary: Create New User
+      description: Create New User
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUser'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/CreateUserResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ConflictResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+      security:
+        - bearerAuth: []
+  /users/verify:
+    patch:
+      tags:
+        - User
+      summary: Verify New User
+      description: Verify New User
+      operationId: verifyUser
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyUser'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/VerifyUserResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ConflictResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+  /users/upload-profile-pic:
+    patch:
+      tags:
+        - User
+      summary: Upload User's Profile Pic
+      description: Upload User's Profile Pic
+      operationId: uploadProfilePic
+      requestBody:
+        $ref: '#/components/requestBodies/UploadProfilePic'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UploadProfilePicResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+      security:
+        - bearerAuth: []
+  /users/toggle-user-status:
+    patch:
+      tags:
+        - User
+      summary: Toggle User Status
+      description: Toggle User Status
+      operationId: toggleUserStatus
+      requestBody:
+        $ref: '#/components/requestBodies/ToggleUserStatus'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ToggleUserStatusResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+      security:
+        - bearerAuth: []
+  /users:
+    get:
+      tags:
+        - User
+      summary: Get Users
+      description: Get Users
+      operationId: getUsers
+      parameters:
+        - name: skip
+          in: query
+          description: Number of User's you want to skip
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          description: Number of User's you want to get in a request
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            default: 10
+        - name: sort
+          in: query
+          description: Set sort order of the field
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+        - name: field
+          in: query
+          description: Field you want to sort
+          schema:
+            type: string
+            enum:
+              - createdAt
+              - updatedAt
+              - firstName
+              - lastName
+              - email
+              - isActive
+              - isVerified
+            default: createdAt
+        - name: firstName
+          in: query
+          description: firstName start with / ends with / contains
+          schema:
+            type: string
+        - name: lastName
+          in: query
+          description: lastName start with / ends with / contains
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: email start with / ends with / contains
+          schema:
+            type: string
+        - name: isActive
+          in: query
+          description: User is active or not
+          schema:
+            type: boolean
+        - name: isVerified
+          in: query
+          description: User is verified or not
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/UsersResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+      security:
+        - bearerAuth: []
+  /users/{userId}:
+    get:
+      tags:
+        - User
+      summary: Get User Details
+      description: Get User Details
+      operationId: userDetails
+      parameters:
+        - name: userId
+          in: path
+          description: userId of the user's
+          schema:
+            type: string
+            pattern: '^[a-f\d]{24}$'
+          required:
+            - userId
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/UserDetailsResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+      security:
+        - bearerAuth: []
+  /roles/create:
+    post:
+      tags:
+        - Role
+      summary: Create New Role
+      description: Create New Role
+      operationId: createRole
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRole'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/CreateRoleResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ConflictResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+      security:
+        - bearerAuth: []
+  /roles/delete:
+    patch:
+      tags:
+        - Role
+      summary: Delete Role
+      description: Delete Role
+      operationId: deleteRole
+      requestBody:
+        $ref: '#/components/requestBodies/DeleteRole'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/DeleteRoleResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+      security:
+        - bearerAuth: []
+  /roles/update:
+    patch:
+      tags:
+        - Role
+      summary: Update Role
+      description: Update Role
+      operationId: updateRole
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateRole'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UpdateRoleResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ConflictResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+        '404':
+          description: Record Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RecordNotFoundResponse'
+      security:
+        - bearerAuth: []
+  /roles:
+    get:
+      tags:
+        - Role
+      summary: Get Roles
+      description: Get Roles
+      operationId: getRoles
+      parameters:
+        - name: skip
+          in: query
+          description: Number of User's you want to skip
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          description: Number of User's you want to get in a request
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            default: 10
+        - name: sort
+          in: query
+          description: Set sort order of the field
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+        - name: field
+          in: query
+          description: Field you want to sort
+          schema:
+            type: string
+            enum:
+              - createdAt
+              - updatedAt
+              - name
+            default: createdAt
+        - name: name
+          in: query
+          description: name start with / ends with / contains
+          schema:
+            type: string
+        - name: moduleType
+          in: query
+          description: matches the module type
+          schema:
+            type: integer
+            enum: [1, 2]
+        - name: createdBy
+          in: query
+          description: matches the createdBy id
+          schema:
+            type: string
+            pattern: '^[a-f\d]{24}$'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/RolesResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenResponse'
+      security:
+        - bearerAuth: []
+  /roles/{roleId}:
+    get:
+      tags:
+        - Role
+      summary: Get Role Details
+      description: Get Role Details
+      operationId: roleDetails
+      parameters:
+        - name: roleId
+          in: path
+          description: roleId of the role
+          schema:
+            type: string
+            pattern: '^[a-f\d]{24}$'
+          required:
+            - roleId
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/RoleDetailsResponse'
+        '424':
+          description: Failed dependency
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/FailedDependencyResponse'
+        '401':
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UnAuthorizedResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BadRequestResponse'
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Tokens:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          pattern: '^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$'
+        refreshToken:
+          type: string
+          pattern: '^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$'
+    FailedDependencyResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: FAILED_DEPENDENCY
+        message:
+          type: string
+    BadRequestResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: BAD_REQUEST
+        message:
+          type: string
+    UnAuthorizedResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: UNAUTHORIZED
+        message:
+          type: string
+    ConflictResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: CONFLICT
+        message:
+          type: string
+    RecordNotFoundResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: RECORD_NOT_FOUND
+        message:
+          type: string
+    ValidationErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: VALIDATION_ERROR
+        message:
+          type: string
+    ForbiddenResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: FORBIDDEN
+        message:
+          type: string
+          default: Permission denied
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: User logged in successfully.
+        data:
+          type: object
+          $ref: '#/components/schemas/Tokens'
+    RefreshResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Access token refreshed successfully.
+        data:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              pattern: '^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$'
+    ChangePasswordResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Password changed successfully.
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    ForgotPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Reset password link sent successfully.
+        status:
+          type: string
+          default: SUCCESS
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    ResetPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Password reset successfully.
+        status:
+          type: string
+          default: SUCCESS
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    CreateUserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: User created successfully.
+        status:
+          type: string
+          default: SUCCESS
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    VerifyUserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: User verified successfully.
+        status:
+          type: string
+          default: SUCCESS
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    UploadProfilePicResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: User profile uploaded successfully.
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    ToggleUserStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: User activated/deactivated successfully.
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        profilePic:
+          type: string
+        isVerified:
+          type: boolean
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Role:
+      type: object
+      properties:
+        _id:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+        name:
+          type: string
+        isDelete:
+          type: boolean
+        createdBy:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+    Permission:
+      type: object
+      properties:
+        moduleType:
+          type: integer
+          enum: [1, 2]
+        permissionType:
+          type: array
+          items:
+            type: integer
+            enum: [1, 2, 3, 4]
+    UsersResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Users fetched successfully.
+        data:
+          type: object
+          properties:
+            totalUsers:
+              type: integer
+              format: int32
+            users:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+    UserDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: User fetched successfully.
+        data:
+          type: object
+          $ref: '#/components/schemas/User'
+    CreateRoleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Role created successfully.
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    DeleteRoleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Role deleted successfully.
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    UpdateRoleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Role updated successfully.
+        data:
+          type: object
+          properties:
+            success:
+              type: boolean
+              default: true
+    RoleWithUser:
+      type: object
+      properties:
+        _id:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+        name:
+          type: string
+        isDelete:
+          type: boolean
+        createdBy:
+          type: object
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+    RolesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Roles fetched successfully.
+        data:
+          type: object
+          properties:
+            totalRoles:
+              type: integer
+              format: int32
+            roles:
+              type: array
+              items:
+                $ref: '#/components/schemas/RoleWithUser'
+    RoleDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          default: SUCCESS
+        message:
+          type: string
+          default: Role fetched successfully.
+        data:
+          type: object
+          $ref: '#/components/schemas/RoleWithUser'
+    ChangePasswordRequest:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          minimum: 6
+        password:
+          type: string
+          minimum: 6
+        confirmPassword:
+          type: string
+          minimum: 6
+      required:
+        - currentPassword
+        - password
+        - confirmPassword
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: 'email'
+        password:
+          type: string
+          minimum: 6
+      required:
+        - email
+        - password
+    RefreshRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+        refreshToken:
+          type: string
+          pattern: '^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$'
+      required:
+        - userId
+        - refreshToken
+    ForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: 'email'
+      required:
+        - email
+    ResetPasswordRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          pattern: '^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$'
+        password:
+          type: string
+          minimum: 6
+        confirmPassword:
+          type: string
+          minimum: 6
+      required:
+        - token
+        - password
+        - confirmPassword
+    CreateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: 'email'
+        password:
+          type: string
+          minimum: 6
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+    VerifyUserRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          pattern: '^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$'
+      required:
+        - token
+    UploadProfilePicRequest:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+      required:
+        - file
+    ToggleUserStatusRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+      required:
+        - userId
+    CreateRoleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+      required:
+        - name
+        - permissions
+    DeleteRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+      required:
+        - roleId
+    UpdateRoleRequest:
+      type: object
+      properties:
+        roleId:
+          type: string
+          pattern: '^[a-f\d]{24}$'
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+      required:
+        - roleId
+  requestBodies:
+    CreateUser:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateUserRequest'
+    VerifyUser:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyUserRequest'
+    UploadProfilePic:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/UploadProfilePicRequest'
+    ToggleUserStatus:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ToggleUserStatusRequest'
+    CreateRole:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRoleRequest'
+    DeleteRole:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteRoleRequest'
+    UpdateRole:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateRoleRequest'
+    ResetPassword:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResetPasswordRequest'
+    ChangePassword:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ChangePasswordRequest'
+    ForgotPassword:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ForgotPasswordRequest'
+    Refresh:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefreshRequest'
+    Login:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
